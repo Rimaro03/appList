@@ -1,0 +1,45 @@
+{
+  "lists": [
+    {
+      "name": "Importanti",
+      "icon": "alert-circle-outline",
+      "iconColor": "#993016",
+      "data": [
+        {
+          "title": "Doctor appointment",
+          "description": "Set an appointment with the doctor"
+        },
+        {
+          "title": "Book hotel room",
+          "description": "book a large hotel room for 4 people"
+        }
+      ]
+    },
+    {
+      "name": "To-Do",
+      "icon": "checkbox-outline",
+      "iconColor": "#4c62ba",
+      "data": [
+        {
+          "title": "Math homework",
+          "description": "Ex 23-29 pg 298, study derivates"
+        }
+      ]
+    },
+    {
+      "name": "Lista della spesa",
+      "icon": "cart",
+      "iconColor": "#2cb278",
+      "data": [
+        {
+          "title": "",
+          "description": "cat food"
+        },
+        {
+          "title": "fish",
+          "description": "raw fish to cook for dinner"
+        }
+      ]
+    }
+  ]
+}
