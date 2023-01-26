@@ -11,7 +11,7 @@ const ListName = ({ name, icon, iconColor, data }: List): JSX.Element => {
 	return (
 		<View
 			style={styles.container}
-			onTouchStart={() => {
+			onTouchEnd={() => {
 				navigation.navigate('List', data);
 			}}>
 			<View style={styles.list}>

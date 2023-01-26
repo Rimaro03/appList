@@ -1,26 +1,65 @@
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Button } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {addList} from '../functions/ListManager';
 
 const ListModal = (): JSX.Element => {
 	const [modalVisible, setModalVisible] = useState(false);
+	const [listName, setListName] = useState('New List');
+	const [emoticon, setEmoticon] = useState('emoticon-happy-outline');
+	const [emoticonColor, setEmoticonColor] = useState('green');
+	const [error, setError] = useState('');
+	const [errorOpen, setErrorOpen] = useState(false);
+	type NavigationProps = NativeStackNavigationProp<ParamListBase>;
+	const navigation = useNavigation<NavigationProps>();
+
+	const handleCompleted = () => {
+		addList(listName, {
+			name: listName,
+			icon: emoticon,
+			iconColor: emoticonColor,
+			data: []
+		}).then(()=>{
+			setErrorOpen(false);
+			setModalVisible(false);
+			setListName('Nuova Lista');
+			setEmoticon('emoticon-happy-outline');
+			setEmoticonColor('green');
+			navigation.navigate('Home');
+		}).catch(err => {
+			setError(err.message);
+			setErrorOpen(true);
+		});
+	};
+
 	return (
 		<View style={styles.centeredView}>
 			<Modal
-				animationType="slide"
+				animationType="fade"
 				transparent={true}
 				visible={modalVisible}
 				onRequestClose={() => {
-					Alert.alert('Modal has been closed.');
 					setModalVisible(!modalVisible);
 				}}>
-				<View style={styles.centeredView}>
+				<View style={styles.modalContainerView}>
 					<View style={styles.modalView}>
-						<Text style={styles.modalText}>Hello World!</Text>
+						<Text style={styles.modalText}>{listName}</Text>
+						<View style={styles.inputView}>
+							<Icon name='emoticon-happy-outline' size={20} />
+							<TextInput
+								style={{ height: 40, borderBottomColor: 'white', borderBottomWidth: 0.5 }}
+								placeholder="Type a name for the list!"
+								onChangeText={newText => setListName(newText)}
+								defaultValue={listName}
+							/>
+						</View>
+						{errorOpen && <Text>{error}</Text>}
 						<Pressable
-							style={[styles.button, styles.buttonClose]}
-							onPress={() => setModalVisible(!modalVisible)}>
-							<Text>Hide Modal</Text>
+							style={[styles.modalButton, styles.buttonClose]}
+							onPress={handleCompleted}>
+							<Icon name={'check-bold'}/>
 						</Pressable>
 					</View>
 				</View>
@@ -37,16 +76,27 @@ const ListModal = (): JSX.Element => {
 
 const styles = StyleSheet.create({
 	centeredView: {
-		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 22,
+		padding: 10
+	},
+	modalContainerView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		margin: 22,
+	},
+	inputView: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 	modalView: {
 		margin: 20,
-		backgroundColor: 'white',
+		backgroundColor: '#212121',
 		borderRadius: 20,
-		padding: 35,
+		padding: 3,
 		alignItems: 'center',
 		shadowColor: '#000',
 		shadowOffset: {
@@ -56,6 +106,15 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
 		elevation: 5,
+	},
+	modalButton: {
+		borderRadius: 20,
+		padding: 10,
+		elevation: 2,
+		marginTop: 15,
+		marginRight: 5,
+		marginBottom: 5,
+		alignSelf: 'flex-end'
 	},
 	button: {
 		borderRadius: 20,

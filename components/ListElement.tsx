@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Item from './interfaces/Item';
-import ListModal from './ListModal';
 
 const ListElement = ({ title, description }: Item): JSX.Element => {
 	return (
@@ -16,7 +15,6 @@ const ListElement = ({ title, description }: Item): JSX.Element => {
 					<Text>{description}</Text>
 				</View>
 			</View>
-			<ListModal />
 		</View>
 	);
 };
