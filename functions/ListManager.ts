@@ -1,6 +1,7 @@
 import List from '../components/interfaces/List';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//async storage utility functions
 export const addList = async(key: string, item: List) => {
 	const secondItem : List | undefined = await getList(`@${key}`)
 		.then(res => res)
