@@ -1,9 +1,12 @@
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
+import { Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {addList} from '../functions/ListManager';
+import { addList } from '../functions/ListManager';
+import Item from './interfaces/Item';
+import List from './interfaces/List';
+import Props from './interfaces/Props';
 
 const ListModal = (): JSX.Element => {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -21,7 +24,7 @@ const ListModal = (): JSX.Element => {
 			icon: emoticon,
 			iconColor: emoticonColor,
 			data: []
-		}).then(()=>{
+		}).then(() => {
 			setErrorOpen(false);
 			setModalVisible(false);
 			setListName('Nuova Lista');
@@ -50,7 +53,7 @@ const ListModal = (): JSX.Element => {
 							<Icon name='emoticon-happy-outline' size={20} />
 							<TextInput
 								style={{ height: 40, borderBottomColor: 'white', borderBottomWidth: 0.5 }}
-								placeholder="Type a name for the list!"
+								placeholder="Type a title for the list!"
 								onChangeText={newText => setListName(newText)}
 								defaultValue={listName}
 							/>
@@ -59,7 +62,7 @@ const ListModal = (): JSX.Element => {
 						<Pressable
 							style={[styles.modalButton, styles.buttonClose]}
 							onPress={handleCompleted}>
-							<Icon name={'check-bold'}/>
+							<Icon name={'check-bold'} />
 						</Pressable>
 					</View>
 				</View>

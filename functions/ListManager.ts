@@ -1,5 +1,6 @@
 import List from '../components/interfaces/List';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Item from '../components/interfaces/Item';
 
 //async storage utility functions
 export const addList = async(key: string, item: List) => {
@@ -20,6 +21,12 @@ export const addList = async(key: string, item: List) => {
 	else{
 		throw new Error('List already exists');
 	}
+};
+
+export const setItems = async(key: string, items: Item[]) => {
+	const list: List | undefined = await getList(`@${key}`);
+	list!.data = items;
+	await AsyncStorage.mergeItem(`@${key}`, JSON.stringify(list));
 };
 
 export const getList = async(key: string):Promise<List | undefined> => {

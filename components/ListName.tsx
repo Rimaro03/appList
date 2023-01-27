@@ -12,7 +12,7 @@ const ListName = ({ name, icon, iconColor, data }: List): JSX.Element => {
 		<View
 			style={styles.container}
 			onTouchEnd={() => {
-				navigation.navigate('List', data);
+				navigation.navigate('List', { data: data, key: name });
 			}}>
 			<View style={styles.list}>
 				<Icon name={icon} size={25} color={iconColor} />

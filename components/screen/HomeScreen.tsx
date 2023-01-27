@@ -6,27 +6,28 @@ import List from '../interfaces/List';
 import ListModal from '../ListModal';
 import { getAllLists } from '../../functions/ListManager';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ParamListBase, RouteProp, useRoute } from '@react-navigation/native';
 
 const HomeScreen = (): JSX.Element => {
 	const [loading, setLoading] = useState(true);
 	const [lists, setLists] = useState<List[]>([]);
-
+	const route: RouteProp<ParamListBase, string> = useRoute();
+	
 	const list: List[] = listObj.lists;
 	useEffect(() => {
 		getAllLists()
-			.then(res => setLists(res))
+			.then(res => setLists(res as List[]))
 			.catch(err => console.error(err)
 			);
 		if (list) {
-			console.log(lists);
 			setLoading(false);
 		}
-	}, [list]);
+	}, [route.params, []]);
 
 	return (
 		<View style={styles.container}>
 			<ScrollView>
-				{!loading &&
+				{/*!loading &&
 					list.map((item: List, index: React.Key) => {
 						return (
 							<ListName
@@ -37,7 +38,7 @@ const HomeScreen = (): JSX.Element => {
 								key={index}
 							/>
 						);
-					})}
+					})*/}
 				{!loading &&
 					lists.map((item: List, index: React.Key) => {
 						return (
@@ -51,7 +52,7 @@ const HomeScreen = (): JSX.Element => {
 						);
 					})}
 			</ScrollView >
-			<ListModal />
+			<ListModal/>
 		</View>
 	);
 };
