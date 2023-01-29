@@ -5,7 +5,7 @@ import * as listObj from '../../lists.json';
 import List from '../interfaces/List';
 import ListModal from '../ListModal';
 import { getAllLists } from '../../functions/ListManager';
-import { ScrollView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import { ParamListBase, RouteProp, useRoute } from '@react-navigation/native';
 
 const HomeScreen = (): JSX.Element => {
@@ -25,9 +25,10 @@ const HomeScreen = (): JSX.Element => {
 	}, [route.params, []]);
 
 	return (
-		<View style={styles.container}>
-			<ScrollView>
-				{/*!loading &&
+		<GestureHandlerRootView>
+			<View style={styles.container}>
+				<ScrollView>
+					{/*!loading &&
 					list.map((item: List, index: React.Key) => {
 						return (
 							<ListName
@@ -39,7 +40,7 @@ const HomeScreen = (): JSX.Element => {
 							/>
 						);
 					})*/}
-				{!loading &&
+					{!loading &&
 					lists.map((item: List, index: React.Key) => {
 						return (
 							<ListName
@@ -51,9 +52,10 @@ const HomeScreen = (): JSX.Element => {
 							/>
 						);
 					})}
-			</ScrollView >
-			<ListModal/>
-		</View>
+				</ScrollView >
+				<ListModal/>
+			</View>
+		</GestureHandlerRootView>
 	);
 };
 
