@@ -8,13 +8,14 @@ import Props from './interfaces/Props';
 
 const ItemModal = (props: Props): JSX.Element => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [title, setTitle] = useState('New Item');
-	const [description, setDescription] = useState('Very long and boring description');
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
 	type NavigationProps = NativeStackNavigationProp<ParamListBase>;
 	const navigation = useNavigation<NavigationProps>();
 	const {data, setData} = props;
 
 	const handleCompleted = () => {
+		if(!(title.length > 0 && description.length > 0)) return;
 		const newItem :Item = {title: title, description: description};
 		setData([...data, newItem]);
 		setModalVisible(false);

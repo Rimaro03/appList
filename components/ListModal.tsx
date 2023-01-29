@@ -19,6 +19,7 @@ const ListModal = (): JSX.Element => {
 	const navigation = useNavigation<NavigationProps>();
 
 	const handleCompleted = () => {
+		if(!(listName.length > 0)) return;
 		addList(listName, {
 			name: listName,
 			icon: emoticon,
