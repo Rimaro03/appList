@@ -1,6 +1,5 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
-
 import {
 	DarkTheme,
 	DefaultTheme,
@@ -9,7 +8,6 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ListScreen from './components/screen/ListScreen';
 import HomeScreen from './components/screen/HomeScreen';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import ListName from '../ListName';
-import * as listObj from '../../lists.json';
 import List from '../interfaces/List';
 import ListModal from '../ListModal';
 import { getAllLists } from '../../functions/ListManager';
@@ -13,13 +12,12 @@ const HomeScreen = (): JSX.Element => {
 	const [lists, setLists] = useState<List[]>([]);
 	const route: RouteProp<ParamListBase, string> = useRoute();
 	
-	const list: List[] = listObj.lists;
 	useEffect(() => {
 		getAllLists()
 			.then(res => setLists(res as List[]))
 			.catch(err => console.error(err)
 			);
-		if (list) {
+		if(lists){
 			setLoading(false);
 		}
 	}, [route.params, []]);
@@ -28,18 +26,6 @@ const HomeScreen = (): JSX.Element => {
 		<GestureHandlerRootView>
 			<View style={styles.container}>
 				<ScrollView>
-					{/*!loading &&
-					list.map((item: List, index: React.Key) => {
-						return (
-							<ListName
-								name={item.name}
-								icon={item.icon}
-								data={item.data}
-								iconColor={item.iconColor}
-								key={index}
-							/>
-						);
-					})*/}
 					{!loading &&
 					lists.map((item: List, index: React.Key) => {
 						return (

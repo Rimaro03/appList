@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 interface Item {
   description: string;
   title: string;
+  completed: boolean;
   data?: Item[];
   setData?: Dispatch<SetStateAction<Item[]>>
   index?: number;

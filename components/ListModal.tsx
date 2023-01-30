@@ -4,9 +4,6 @@ import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addList } from '../functions/ListManager';
-import Item from './interfaces/Item';
-import List from './interfaces/List';
-import Props from './interfaces/Props';
 
 const ListModal = (): JSX.Element => {
 	const [modalVisible, setModalVisible] = useState(false);

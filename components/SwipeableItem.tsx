@@ -9,6 +9,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 const SwipeableItem = (props: any) => {
+	// eslint-disable-next-line prefer-const
+	let { completeItem, removeItem, index, completed } = props;
+
 	const renderLeftAcions = (
 		_progress: Animated.AnimatedInterpolation<number>,
 		dragX: Animated.AnimatedInterpolation<number>,
@@ -20,15 +23,32 @@ const SwipeableItem = (props: any) => {
 		});
 
 		return (
-			<View style={{
-				width: 80,
-			}}>
-				<RectButton style={styles.leftAction} onPress={close}>
-					<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
-						<Icon name='delete' size={25}/>
-					</AnimatedView>
-				</RectButton>
-			</View>
+
+			<RectButton style={styles.leftAction} onPress={handleComplete}>
+				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
+					<Icon name='check-circle' size={25} />
+				</AnimatedView>
+			</RectButton>
+		);
+	};
+
+	const renderLeftAcionsCompleted = (
+		_progress: Animated.AnimatedInterpolation<number>,
+		dragX: Animated.AnimatedInterpolation<number>,
+	) => {
+		const scale = dragX.interpolate({
+			inputRange: [0, 80],
+			outputRange: [0, 1],
+			extrapolate: 'clamp',
+		});
+
+		return (
+
+			<RectButton style={styles.rightAction} onPress={handleComplete}>
+				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
+					<Icon name='check-circle' size={25} />
+				</AnimatedView>
+			</RectButton>
 		);
 	};
 
@@ -43,8 +63,7 @@ const SwipeableItem = (props: any) => {
 		});
 
 		return (
-
-			<RectButton style={styles.rightAction} onPress={close}>
+			<RectButton style={styles.rightAction} onPress={handleRemove}>
 				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
 					<Icon name='delete' size={25} />
 				</AnimatedView>
@@ -59,8 +78,14 @@ const SwipeableItem = (props: any) => {
 		swipeableRow = ref;
 	};
 
-	const close = () => {
+	const handleComplete = () => {
 		swipeableRow.close();
+		completeItem(index);
+	};
+
+	const handleRemove = () => {
+		swipeableRow.close();
+		removeItem(index);
 	};
 
 	const { children } = props;
@@ -72,7 +97,7 @@ const SwipeableItem = (props: any) => {
 			leftThreshold={80}
 			enableTrackpadTwoFingerGesture
 			rightThreshold={80}
-			renderLeftActions={renderLeftAcions}
+			renderLeftActions={completed ? renderLeftAcionsCompleted : renderLeftAcions}
 			renderRightActions={renderRightAcions}>
 			{children}
 		</Swipeable>
@@ -96,6 +121,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#dd2c00',
 		flex: 1,
 		justifyContent: 'flex-end',
+	},
+	actionText: {
+		color: 'white',
+		fontSize: 16,
+		backgroundColor: 'transparent',
+		padding: 10,
 	},
 });
 

@@ -16,7 +16,7 @@ const ItemModal = (props: Props): JSX.Element => {
 
 	const handleCompleted = () => {
 		if(!(title.length > 0 && description.length > 0)) return;
-		const newItem :Item = {title: title, description: description};
+		const newItem :Item = {title: title, description: description, completed: false};
 		setData([...data, newItem]);
 		setModalVisible(false);
 		setTitle('');

@@ -3,47 +3,74 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Item from '../interfaces/Item';
 import ListElement from '../ListElement';
-import { FlatList, GestureHandlerRootView, RectButton, ScrollView } from 'react-native-gesture-handler';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import ItemModal from '../ItemModal';
 import { Params } from '../interfaces/Params';
 import { setItems } from '../../functions/ListManager';
 import SwipeableItem from '../SwipeableItem';
-import DataRow from '../interfaces/DataRow';
 
 const ListScreen = (): JSX.Element => {
 	const route: RouteProp<ParamListBase, string> = useRoute();
 	const [params] = useState<Params>(route.params as Params);
 	const [data, setData] = useState<Array<Item>>(params.data);
+	const [notCompleted, setNotCompleted] = useState<Array<Item>>();
+	const [completed, setCompleted] = useState<Array<Item>>();
 	const [key, setKey] = useState(params.key);
 
-	useEffect(()=>{
+	useEffect(() => {
 		setData(data);
 		setKey(key);
 	}, [params]);
-	
-	useEffect(()=>{
+
+	useEffect(() => {
 		setItems(key, data)
 			.catch(err => console.error(err));
+		setCompleted(data.filter(item => { return item.completed; }));
+		setNotCompleted(data.filter(item => { return !item.completed; }));
 	}, [data]);
+
+	const removeItem = (index: number) => {
+		data[index] = { title: '', description: '', completed: false };
+		setData(formatArray(data));
+	};
+
+	const formatArray = (array: Item[]) => {
+		const newArray: Item[] = array.filter(item => { return item.title.length > 0 && item.description.length > 0; });
+		return newArray;
+	};
+	const completeItem = (index: number) => {
+		data[index].completed = true;
+		setData(formatArray(data));
+	};
 
 	const SwipeableRow = ({ item, index }: { item: Item, index: React.Key }) => {
 		return (
-			<SwipeableItem>
-				<ListElement title={item.title} description={item.description} data={data} setData={setData} index={index as number} />
+			<SwipeableItem removeItem={removeItem} completeItem={completeItem} completed={item.completed} index={index as number} >
+				<ListElement title={item.title} description={item.description} completed={item.completed} />
 			</SwipeableItem>
 		);
 	};
-	
+
 	return (
 		<GestureHandlerRootView >
 			<View style={styles.container}>
-				<FlatList
-					data={data}
-					ItemSeparatorComponent={() => <View style={styles.separator} />}
-					renderItem={({ item, index }) => <SwipeableRow item={item} index={index} />}
-					keyExtractor={(_item, index) => `message ${index}`}
-				/>
-				<ItemModal data={data} setData={setData}/>
+				<View>
+					<Text>Not Completed</Text>
+					<FlatList
+						data={notCompleted}
+						ItemSeparatorComponent={() => <View style={styles.separator} />}
+						renderItem={({ item, index }) => <SwipeableRow item={item} index={index} />}
+						keyExtractor={(_item, index) => `message ${index}`}
+					/>
+					<Text>Completed</Text>
+					<FlatList
+						data={completed}
+						ItemSeparatorComponent={() => <View style={styles.separator} />}
+						renderItem={({ item, index }) => <SwipeableRow item={item} index={index} />}
+						keyExtractor={(_item, index) => `message ${index}`}
+					/>
+				</View>
+				<ItemModal data={data} setData={setData} />
 			</View>
 		</GestureHandlerRootView >
 	);
