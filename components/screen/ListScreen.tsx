@@ -7,7 +7,9 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import ItemModal from '../ItemModal';
 import { Params } from '../interfaces/Params';
 import { setItems } from '../../functions/ListManager';
-import SwipeableItem from '../SwipeableItem';
+import SwipeNotCompleted from '../SwipeNotCompleted';
+import SwipeCompleted from '../SwipeCompleted';
+import CompletedListElement from '../CompletedListElement';
 
 const ListScreen = (): JSX.Element => {
 	const route: RouteProp<ParamListBase, string> = useRoute();
@@ -43,13 +45,24 @@ const ListScreen = (): JSX.Element => {
 		setData(formatArray(data));
 	};
 
-	const SwipeableRow = ({ item, index }: { item: Item, index: React.Key }) => {
-		return (
-			<SwipeableItem removeItem={removeItem} completeItem={completeItem} completed={item.completed} index={index as number} >
-				<ListElement title={item.title} description={item.description} completed={item.completed} />
-			</SwipeableItem>
-		);
+	const uncompleteItem = (index: number) => {
+		data[index].completed = false;
+		setData(formatArray(data));
 	};
+
+	const SwipeableRow = ({ item, index }: { item: Item, index: React.Key }) => (
+		<>
+			{!item.completed ?
+				<SwipeNotCompleted removeItem={removeItem} completeItem={completeItem} index={index as number} >
+					<ListElement title={item.title} description={item.description} completed={item.completed} />
+				</SwipeNotCompleted>
+				:
+				<SwipeCompleted removeItem={removeItem} uncompleteItem={uncompleteItem} index={index as number} >
+					<CompletedListElement title={item.title} description={item.description} completed={item.completed} />
+				</SwipeCompleted>
+			}
+		</>
+	);
 
 	return (
 		<GestureHandlerRootView >

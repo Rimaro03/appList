@@ -8,9 +8,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-const SwipeableItem = (props: any) => {
+const SwipeCompleted = (props: any) => {
 	// eslint-disable-next-line prefer-const
-	let { completeItem, removeItem, index, completed } = props;
+	let { removeItem, uncompleteItem, index } = props;
 
 	const renderLeftAcions = (
 		_progress: Animated.AnimatedInterpolation<number>,
@@ -24,33 +24,14 @@ const SwipeableItem = (props: any) => {
 
 		return (
 
-			<RectButton style={styles.leftAction} onPress={handleComplete}>
+			<RectButton style={styles.leftAction} onPress={handleNotCompleted}>
 				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
-					<Icon name='check-circle' size={25} />
+					<Icon name='arrow-up-circle-outline' size={25} />
 				</AnimatedView>
 			</RectButton>
 		);
 	};
 
-	const renderLeftAcionsCompleted = (
-		_progress: Animated.AnimatedInterpolation<number>,
-		dragX: Animated.AnimatedInterpolation<number>,
-	) => {
-		const scale = dragX.interpolate({
-			inputRange: [0, 80],
-			outputRange: [0, 1],
-			extrapolate: 'clamp',
-		});
-
-		return (
-
-			<RectButton style={styles.rightAction} onPress={handleComplete}>
-				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
-					<Icon name='check-circle' size={25} />
-				</AnimatedView>
-			</RectButton>
-		);
-	};
 
 	const renderRightAcions = (
 		_progress: Animated.AnimatedInterpolation<number>,
@@ -78,9 +59,9 @@ const SwipeableItem = (props: any) => {
 		swipeableRow = ref;
 	};
 
-	const handleComplete = () => {
+	const handleNotCompleted = () => {
 		swipeableRow.close();
-		completeItem(index);
+		uncompleteItem(index);
 	};
 
 	const handleRemove = () => {
@@ -97,7 +78,7 @@ const SwipeableItem = (props: any) => {
 			leftThreshold={80}
 			enableTrackpadTwoFingerGesture
 			rightThreshold={80}
-			renderLeftActions={completed ? renderLeftAcionsCompleted : renderLeftAcions}
+			renderLeftActions={renderLeftAcions}
 			renderRightActions={renderRightAcions}>
 			{children}
 		</Swipeable>
@@ -107,7 +88,7 @@ const SwipeableItem = (props: any) => {
 const styles = StyleSheet.create({
 	leftAction: {
 		flex: 1,
-		backgroundColor: '#388e3c',
+		backgroundColor: '#EED202',
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		flexDirection: I18nManager.isRTL ? 'row' : 'row-reverse',
@@ -130,4 +111,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default SwipeableItem;
+export default SwipeCompleted;
