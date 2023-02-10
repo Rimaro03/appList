@@ -37,7 +37,6 @@ const ItemModal = (props: Props): JSX.Element => {
 					<View style={styles.modalView}>
 						<Text style={styles.modalText}>{title}</Text>
 						<View style={styles.inputView}>
-							<Icon name='emoticon-happy-outline' size={20} />
 							<View style={{flexDirection: 'column'}}>
 								<TextInput
 									style={{ height: 40, borderBottomColor: 'white', borderBottomWidth: 0.5 }}

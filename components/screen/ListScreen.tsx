@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Item from '../interfaces/Item';
 import ListElement from '../ListElement';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import ItemModal from '../ItemModal';
 import { Params } from '../interfaces/Params';
 import { setItems } from '../../functions/ListManager';
@@ -67,22 +67,23 @@ const ListScreen = (): JSX.Element => {
 	return (
 		<GestureHandlerRootView >
 			<View style={styles.container}>
-				<View>
-					<Text>Not Completed</Text>
-					<FlatList
-						data={notCompleted}
-						ItemSeparatorComponent={() => <View style={styles.separator} />}
-						renderItem={({ item, index }) => <SwipeableRow item={item} index={index} />}
-						keyExtractor={(_item, index) => `message ${index}`}
-					/>
-					<Text>Completed</Text>
-					<FlatList
-						data={completed}
-						ItemSeparatorComponent={() => <View style={styles.separator} />}
-						renderItem={({ item, index }) => <SwipeableRow item={item} index={index} />}
-						keyExtractor={(_item, index) => `message ${index}`}
-					/>
-				</View>
+				<ScrollView>
+					{
+						notCompleted?.map((item, index) => (
+							<SwipeableRow item={item} index={index} key={index} />
+						))
+					}
+					{(completed && completed.length > 0) &&
+						<View style={styles.titleBox}>
+							<Text>Completed</Text>
+						</View>
+					}
+					{
+						completed?.map((item, index) => (
+							<SwipeableRow item={item} index={index} key={index} />
+						))
+					}
+				</ScrollView>
 				<ItemModal data={data} setData={setData} />
 			</View>
 		</GestureHandlerRootView >
@@ -125,6 +126,13 @@ const styles = StyleSheet.create({
 		color: '#999',
 		fontWeight: 'bold',
 	},
+	titleBox: {
+		alignSelf: 'center',
+		backgroundColor: 'grey',
+		padding: 5,
+		margin: 10,
+		borderRadius: 5,
+	}
 });
 
 export default ListScreen;
