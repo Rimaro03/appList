@@ -10,14 +10,17 @@ import { setItems } from '../../functions/ListManager';
 import SwipeNotCompleted from '../SwipeNotCompleted';
 import SwipeCompleted from '../SwipeCompleted';
 import CompletedListElement from '../CompletedListElement';
+import Snack from '../Snack';
 
 const ListScreen = (): JSX.Element => {
 	const route: RouteProp<ParamListBase, string> = useRoute();
 	const [params] = useState<Params>(route.params as Params);
+	const [snackVisible, setSnackVisible] = useState<boolean>(false);
 	const [data, setData] = useState<Array<Item>>(params.data);
 	const [notCompleted, setNotCompleted] = useState<Array<Item>>();
 	const [completed, setCompleted] = useState<Array<Item>>();
 	const [key, setKey] = useState(params.key);
+	const [snackLabel, setSnackLabel] = useState('');
 
 	useEffect(() => {
 		setData(data);
@@ -40,6 +43,7 @@ const ListScreen = (): JSX.Element => {
 		const newArray: Item[] = array.filter(item => { return item.title.length > 0 && item.description.length > 0; });
 		return newArray;
 	};
+
 	const completeItem = (index: number) => {
 		data[index].completed = true;
 		setData(formatArray(data));
@@ -50,10 +54,29 @@ const ListScreen = (): JSX.Element => {
 		setData(formatArray(data));
 	};
 
+	const handleNotCompetedSwipe = (direction: string, index: number) => {
+		console.log(`Swiped not completed item from the ${direction}`);
+		/**
+		 * From left? compete item, undo action: move item from completed to not completed
+		 * From right? delete item, undo action: respawn the deleted item in the "not completed" section
+		 * show snack bar with undo action
+		 */
+		if (direction == 'left') {
+			completeItem(index);
+			//code undo option
+		}
+		else if (direction == 'right') {
+			removeItem(index);
+			//code undo option
+		}
+		//code & show snack bar
+		setSnackVisible(true);
+	};
+
 	const SwipeableRow = ({ item, index }: { item: Item, index: React.Key }) => (
 		<>
 			{!item.completed ?
-				<SwipeNotCompleted removeItem={removeItem} completeItem={completeItem} index={index as number} >
+				<SwipeNotCompleted handleSwipe={handleNotCompetedSwipe} index={index as number} >
 					<ListElement title={item.title} description={item.description} completed={item.completed} />
 				</SwipeNotCompleted>
 				:
@@ -86,6 +109,9 @@ const ListScreen = (): JSX.Element => {
 				</ScrollView>
 				<ItemModal data={data} setData={setData} />
 			</View>
+			<Snack label={snackLabel} action={() => {
+				console.log(1);
+			}} snackVisible={snackVisible} setSnackVisible={setSnackVisible} />
 		</GestureHandlerRootView >
 	);
 };
@@ -132,7 +158,8 @@ const styles = StyleSheet.create({
 		padding: 5,
 		margin: 10,
 		borderRadius: 5,
-	}
+	},
+
 });
 
 export default ListScreen;

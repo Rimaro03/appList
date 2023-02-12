@@ -10,7 +10,7 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 
 const SwipeNotCompleted = (props: any) => {
 	// eslint-disable-next-line prefer-const
-	let { completeItem, removeItem, index } = props;
+	let { handleSwipe, index } = props;
 
 	const renderLeftAcions = (
 		_progress: Animated.AnimatedInterpolation<number>,
@@ -24,7 +24,7 @@ const SwipeNotCompleted = (props: any) => {
 
 		return (
 
-			<RectButton style={styles.leftAction} onPress={handleComplete}>
+			<RectButton style={styles.leftAction}>
 				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
 					<Icon name='check-circle' size={25} />
 				</AnimatedView>
@@ -42,7 +42,7 @@ const SwipeNotCompleted = (props: any) => {
 		});
 
 		return (
-			<RectButton style={styles.rightAction} onPress={handleRemove}>
+			<RectButton style={styles.rightAction}>
 				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
 					<Icon name='delete' size={25} />
 				</AnimatedView>
@@ -57,16 +57,6 @@ const SwipeNotCompleted = (props: any) => {
 		swipeableRow = ref;
 	};
 
-	const handleComplete = () => {
-		swipeableRow.close();
-		completeItem(index);
-	};
-
-	const handleRemove = () => {
-		swipeableRow.close();
-		removeItem(index);
-	};
-
 	const { children } = props;
 
 	return (
@@ -77,6 +67,7 @@ const SwipeNotCompleted = (props: any) => {
 			enableTrackpadTwoFingerGesture
 			rightThreshold={80}
 			renderLeftActions={renderLeftAcions}
+			onSwipeableOpen={(direction) => { handleSwipe(direction, index);}}
 			renderRightActions={renderRightAcions}>
 			{children}
 		</Swipeable>

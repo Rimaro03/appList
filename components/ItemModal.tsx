@@ -72,7 +72,6 @@ const ItemModal = (props: Props): JSX.Element => {
 
 const styles = StyleSheet.create({
 	centeredView: {
-		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 22,
 		padding: 10
