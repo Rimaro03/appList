@@ -55,21 +55,14 @@ const ListScreen = (): JSX.Element => {
 	};
 
 	const handleNotCompetedSwipe = (direction: string, index: number) => {
-		console.log(`Swiped not completed item from the ${direction}`);
-		/**
-		 * From left? compete item, undo action: move item from completed to not completed
-		 * From right? delete item, undo action: respawn the deleted item in the "not completed" section
-		 * show snack bar with undo action
-		 */
 		if (direction == 'left') {
 			completeItem(index);
-			//code undo option
+			setSnackLabel('Task completed');
 		}
 		else if (direction == 'right') {
 			removeItem(index);
-			//code undo option
+			setSnackLabel('Task deleted');
 		}
-		//code & show snack bar
 		setSnackVisible(true);
 	};
 

@@ -14,10 +14,8 @@ const Snack = (props: SnackProps) => {
 			visible={snackVisible}
 			onDismiss={onDismissSnackBar}
 			duration={5000}
-			action={{
-				label: 'Cancella',
-				onPress: action,
-			}}>
+			onIconPress={()=>{console.log();}}
+			icon='checkbox-marked-circle-outline'>
 			{label}
 		</Snackbar>
 	);

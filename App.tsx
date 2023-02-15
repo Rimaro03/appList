@@ -17,7 +17,9 @@ const App = (): JSX.Element => {
 	const scheme = useColorScheme();
 
 	return (
-		<Provider>
+		<Provider settings={{
+			icon: props => <Icon {...props} />
+		}}>
 			<NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
 				<Stack.Navigator
 					initialRouteName="Home"
