@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addList } from '../functions/ListManager';
+import List from './interfaces/List';
 
 const ListModal = (): JSX.Element => {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -17,18 +18,20 @@ const ListModal = (): JSX.Element => {
 
 	const handleCompleted = () => {
 		if(!(listName.length > 0)) return;
-		addList(listName, {
+		const newList: List = {
 			name: listName,
 			icon: emoticon,
 			iconColor: emoticonColor,
-			data: []
-		}).then(() => {
+			completed: [],
+			notCompleted: []
+		};
+		addList(listName, newList).then(() => {
 			setErrorOpen(false);
 			setModalVisible(false);
 			setListName('Nuova Lista');
 			setEmoticon('emoticon-happy-outline');
 			setEmoticonColor('green');
-			navigation.navigate('Home');
+			navigation.navigate('Home', newList);
 		}).catch(err => {
 			setError(err.message);
 			setErrorOpen(true);
@@ -52,6 +55,7 @@ const ListModal = (): JSX.Element => {
 							<TextInput
 								style={{ height: 40, borderBottomColor: 'white', borderBottomWidth: 0.5 }}
 								placeholder="Type a title for the list!"
+								maxLength={20}
 								onChangeText={newText => setListName(newText)}
 								defaultValue={listName}
 							/>

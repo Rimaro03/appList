@@ -4,7 +4,8 @@ interface List {
   name: string;
   icon: string;
   iconColor: string;
-  data: Item[];
+  completed: Item[];
+  notCompleted: Item[];
 }
 
 export default List;

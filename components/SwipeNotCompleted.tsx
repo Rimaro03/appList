@@ -1,8 +1,6 @@
 import React from 'react';
 import { Animated, StyleSheet, I18nManager, View } from 'react-native';
-
 import { RectButton } from 'react-native-gesture-handler';
-
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -23,12 +21,11 @@ const SwipeNotCompleted = (props: any) => {
 		});
 
 		return (
-
-			<RectButton style={styles.leftAction}>
-				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
+			<View style={styles.leftAction}>
+				<AnimatedView style={[styles.leftAction, styles.actionIcon, { transform: [{ scale }] }]}>
 					<Icon name='check-circle' size={25} />
 				</AnimatedView>
-			</RectButton>
+			</View>
 		);
 	};
 	const renderRightAcions = (

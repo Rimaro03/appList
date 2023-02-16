@@ -4,29 +4,19 @@ import Item from '../components/interfaces/Item';
 
 //async storage utility functions
 export const addList = async(key: string, item: List) => {
-	const secondItem : List | undefined = await getList(`@${key}`)
-		.then(res => res)
-		.catch(() => {
-			throw new Error(`Error on setting list ${key}`);
-		});
-	
-	if(secondItem == undefined){
-		try {
-			const jsonValue = JSON.stringify(item);
-			await AsyncStorage.setItem(`@${key}`, jsonValue);
-		} catch (e) {
-			throw new Error(`ERROR SAVING LIST ${key}`);
-		}
-	}
-	else{
-		throw new Error('List already exists');
+	/**
+	 * @todo: move the controls on the home screen
+	 */
+	try {
+		const jsonValue = JSON.stringify(item);
+		await AsyncStorage.setItem(`@${key}`, jsonValue);
+	} catch (e) {
+		throw new Error(`Error on saving list ${key}`);
 	}
 };
 
 export const setItems = async(key: string, items: Item[]) => {
-	const list: List | undefined = await getList(`@${key}`);
-	list!.data = items;
-	await AsyncStorage.mergeItem(`@${key}`, JSON.stringify(list));
+	await AsyncStorage.mergeItem(`@${key}`, JSON.stringify(items));
 };
 
 export const getList = async(key: string):Promise<List | undefined> => {
@@ -41,7 +31,7 @@ export const getList = async(key: string):Promise<List | undefined> => {
 };
 
 export const getAllLists = async(): Promise<List[]> => {
-	let keys: readonly string[] = [];
+	let keys: readonly string[];
 	try {
 		keys = await AsyncStorage.getAllKeys();
 	} catch(e) {
@@ -55,4 +45,18 @@ export const getAllLists = async(): Promise<List[]> => {
 		}
 	}
 	return lists;
+};
+
+
+export const save = async(lists: List[]) => {
+	const multiMerge: [string, string][] = [];
+	lists.forEach(list => {
+		const key = list.name;
+		const data = list;
+		multiMerge.push([
+			key,
+			JSON.stringify(data)
+		]);
+	});
+	await AsyncStorage.multiMerge(multiMerge);
 };

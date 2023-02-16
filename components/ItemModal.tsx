@@ -12,12 +12,12 @@ const ItemModal = (props: Props): JSX.Element => {
 	const [description, setDescription] = useState('');
 	type NavigationProps = NativeStackNavigationProp<ParamListBase>;
 	const navigation = useNavigation<NavigationProps>();
-	const {data, setData} = props;
+	const {notCompleted, setNotCompleted} = props;
 
 	const handleCompleted = () => {
-		if(!(title.length > 0 && description.length > 0)) return;
-		const newItem :Item = {title: title, description: description, completed: false};
-		setData([...data, newItem]);
+		if(!(title.length > 0 && description.length > 0)) return;	
+		const newItem: Item = {title: title, description: description};
+		setNotCompleted([...notCompleted, newItem]);
 		setModalVisible(false);
 		setTitle('');
 		setDescription('');

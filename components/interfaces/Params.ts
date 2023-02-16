@@ -1,6 +1,9 @@
 import Item from './Item';
 
-export interface Params {
-    data: Item[],
+interface Params {
+    completed: Item[],
+    notCompleted: Item[],
     key: string
 }
+
+export default Params;

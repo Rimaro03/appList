@@ -1,8 +1,6 @@
 import React from 'react';
 import { Animated, StyleSheet, I18nManager, View } from 'react-native';
-
 import { RectButton } from 'react-native-gesture-handler';
-
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -10,7 +8,7 @@ const AnimatedView = Animated.createAnimatedComponent(View);
 
 const SwipeCompleted = (props: any) => {
 	// eslint-disable-next-line prefer-const
-	let { removeItem, uncompleteItem, index } = props;
+	let { handleSwipe, index } = props;
 
 	const renderLeftAcions = (
 		_progress: Animated.AnimatedInterpolation<number>,
@@ -24,7 +22,7 @@ const SwipeCompleted = (props: any) => {
 
 		return (
 
-			<RectButton style={styles.leftAction} onPress={handleNotCompleted}>
+			<RectButton style={styles.leftAction}>
 				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
 					<Icon name='arrow-up-circle-outline' size={25} />
 				</AnimatedView>
@@ -44,7 +42,7 @@ const SwipeCompleted = (props: any) => {
 		});
 
 		return (
-			<RectButton style={styles.rightAction} onPress={handleRemove}>
+			<RectButton style={styles.rightAction}>
 				<AnimatedView style={[styles.actionIcon, { transform: [{ scale }] }]}>
 					<Icon name='delete' size={25} />
 				</AnimatedView>
@@ -59,16 +57,6 @@ const SwipeCompleted = (props: any) => {
 		swipeableRow = ref;
 	};
 
-	const handleNotCompleted = () => {
-		swipeableRow.close();
-		uncompleteItem(index);
-	};
-
-	const handleRemove = () => {
-		swipeableRow.close();
-		removeItem(index);
-	};
-
 	const { children } = props;
 
 	return (
@@ -79,6 +67,7 @@ const SwipeCompleted = (props: any) => {
 			enableTrackpadTwoFingerGesture
 			rightThreshold={80}
 			renderLeftActions={renderLeftAcions}
+			onSwipeableOpen={(direction) => { handleSwipe(direction, index); }}
 			renderRightActions={renderRightAcions}>
 			{children}
 		</Swipeable>

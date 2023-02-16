@@ -14,8 +14,12 @@ const Snack = (props: SnackProps) => {
 			visible={snackVisible}
 			onDismiss={onDismissSnackBar}
 			duration={5000}
-			onIconPress={()=>{console.log();}}
-			icon='checkbox-marked-circle-outline'>
+			action={{
+				label: 'Close',
+				onPress: () => {
+					onToggleSnackBar();
+				},
+			}}>
 			{label}
 		</Snackbar>
 	);
